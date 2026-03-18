@@ -1,0 +1,768 @@
+/* ===== 全局像素风格 ===== */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --sky:       #87ceeb;
+  --sky-dark:  #4a90b8;
+  --grass:     #5a8a3c;
+  --grass-dk:  #3d6128;
+  --water:     #2d7db3;
+  --water-lt:  #53b8e0;
+  --deep:      #0a2a4a;
+  --deep-mid:  #0d3d6b;
+  --bubble:    rgba(160,220,255,0.6);
+  --gold:      #f7c948;
+  --cream:     #fef9e7;
+  --pixel-border: 3px solid #222;
+  --shadow:    4px 4px 0 #222;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--deep);
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Sans SC', sans-serif;
+  image-rendering: pixelated;
+}
+
+/* ===== 场景通用容器 ===== */
+.scene {
+  width: 480px;
+  height: 640px;
+  position: relative;
+  overflow: hidden;
+  border: var(--pixel-border);
+  box-shadow: var(--shadow);
+}
+
+/* ===== 像素按钮 ===== */
+.px-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: var(--gold);
+  color: #222;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  border: 3px solid #222;
+  box-shadow: 4px 4px 0 #222;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 0.5px;
+  transition: transform 0.08s, box-shadow 0.08s;
+  text-align: center;
+}
+.px-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #222;
+}
+.px-btn.secondary {
+  background: #ddd;
+}
+.px-btn.danger {
+  background: #e05555;
+  color: #fff;
+}
+.px-btn.treasure {
+  background: var(--gold);
+}
+
+/* ===== 像素对话框 ===== */
+.px-dialog {
+  background: var(--cream);
+  border: 3px solid #222;
+  box-shadow: 6px 6px 0 #222;
+  padding: 20px;
+}
+
+/* ===== 文字像素风标题 ===== */
+.px-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: #222;
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 水波动画 ===== */
+@keyframes wave {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-200px) scale(0.3); opacity: 0; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes open-lid {
+  0%   { transform: scaleY(1); }
+  100% { transform: scaleY(0) translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--gold); }
+  50%       { box-shadow: 0 0 20px var(--gold), 0 0 40px var(--gold); }
+}
+
+@keyframes dive-down {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(200px); opacity: 0; }
+}
+
+@keyframes surface-up {
+  0%   { transform: translateY(80px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== 湖边场景 ===== */
+#scene-shore {
+  background: linear-gradient(to bottom, #87ceeb 0%, #c5e8f5 45%, #5a8a3c 45%, #3d6128 55%, #2d7db3 55%, #1a5a8a 100%);
+}
+
+.shore-sky {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 44%;
+}
+
+/* 太阳 */
+.shore-sun {
+  position: absolute;
+  top: 30px; right: 60px;
+  width: 36px; height: 36px;
+  background: #ffd700;
+  border: 3px solid #e6a000;
+  box-shadow: 0 0 0 4px #ffe066, 0 0 0 6px rgba(255,215,0,0.3);
+}
+
+/* 云朵（像素风，box-shadow组合） */
+.cloud {
+  position: absolute;
+  background: #fff;
+  border: 2px solid #ddd;
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  border: 2px solid #ddd;
+}
+
+/* 草地 */
+.shore-grass {
+  position: absolute;
+  left: 0; right: 0;
+  top: 44%;
+  height: 11%;
+  background: linear-gradient(to bottom, #5a8a3c, #3d6128);
+  border-top: 3px solid #2a4a1a;
+}
+
+/* 像素小树 */
+.pixel-tree {
+  position: absolute;
+  bottom: 0;
+}
+.pixel-tree .trunk {
+  width: 12px; height: 20px;
+  background: #7a4a1a;
+  border: 2px solid #4a2a08;
+  margin: 0 auto;
+}
+.pixel-tree .leaves {
+  width: 36px; height: 36px;
+  background: #3a7a1a;
+  border: 3px solid #2a5a0a;
+  margin: 0 auto -4px;
+}
+.pixel-tree .leaves2 {
+  width: 48px; height: 28px;
+  background: #4a9a2a;
+  border: 3px solid #2a6a0a;
+  margin: 0 auto;
+}
+
+/* 水面 */
+.shore-water {
+  position: absolute;
+  left: 0; right: 0;
+  top: 55%;
+  bottom: 0;
+  background: linear-gradient(to bottom, #3da4d9 0%, #1a5a8a 100%);
+  overflow: hidden;
+}
+
+.water-surface {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 16px;
+  overflow: hidden;
+}
+.water-wave {
+  position: absolute;
+  top: 0;
+  width: 200%;
+  height: 12px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.5) 0px,
+    rgba(255,255,255,0.5) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+  animation: wave 2s linear infinite;
+}
+.water-wave2 {
+  top: 5px;
+  animation: wave 3s linear infinite reverse;
+  opacity: 0.5;
+}
+
+/* 像素小人 */
+.pixel-person {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+}
+.person-head {
+  width: 16px; height: 16px;
+  background: #f5c5a3;
+  border: 2px solid #c8845a;
+  margin: 0 auto;
+}
+.person-body {
+  width: 20px; height: 20px;
+  background: #4a7acc;
+  border: 2px solid #2a4a9a;
+  margin: 0 auto;
+}
+.person-legs {
+  display: flex; gap: 2px; justify-content: center;
+}
+.person-leg {
+  width: 8px; height: 14px;
+  background: #2a3a6a;
+  border: 2px solid #111;
+}
+
+/* 湖边UI面板 */
+.shore-ui {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 260px;
+  animation: slide-up 0.5s ease both;
+}
+
+.shore-title-box {
+  background: rgba(0,0,0,0.7);
+  border: 3px solid var(--gold);
+  padding: 10px 16px;
+  width: 100%;
+  text-align: center;
+}
+.shore-title-box .px-title {
+  color: var(--gold);
+  font-size: 13px;
+}
+.shore-title-box .subtitle {
+  font-family: 'Noto Sans SC', sans-serif;
+  color: #ccc;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* ===== 下潜/上岸过渡 ===== */
+#scene-transition {
+  background: linear-gradient(to bottom, #2d7db3 0%, #0a2a4a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.transition-person {
+  animation: dive-down 1.2s ease-in both;
+}
+.transition-person.surfacing {
+  animation: surface-up 1s ease-out both;
+}
+
+.transition-bubbles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--bubble);
+  border: 1px solid rgba(100,200,255,0.8);
+  animation: float-up 2s ease-in infinite;
+}
+
+.transition-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.8);
+  text-align: center;
+  line-height: 2;
+  animation: fade-in 0.8s ease both;
+}
+
+/* ===== 水下场景 ===== */
+#scene-underwater {
+  background: linear-gradient(to bottom, #0d3d6b 0%, #051a30 100%);
+  overflow: hidden;
+}
+
+.underwater-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 光束 */
+.light-ray {
+  position: absolute;
+  top: 0;
+  width: 60px;
+  background: linear-gradient(to bottom, rgba(100,200,255,0.15), transparent);
+  transform-origin: top center;
+}
+
+/* 水草 */
+.seaweed {
+  position: absolute;
+  bottom: 0;
+  width: 8px;
+  background: #1a6a2a;
+  border-radius: 4px 4px 0 0;
+  border: 1px solid #0a4a1a;
+}
+
+/* 鱼 */
+.fish {
+  position: absolute;
+  font-size: 18px;
+  animation: bob 3s ease-in-out infinite;
+}
+
+/* 容器 */
+.container-row {
+  position: absolute;
+  bottom: 80px;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0 20px;
+}
+
+.treasure-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  animation: bob var(--bob-dur, 2.5s) ease-in-out infinite;
+  animation-delay: var(--bob-delay, 0s);
+  transition: transform 0.15s;
+}
+.treasure-container:hover {
+  transform: scale(1.1);
+}
+.treasure-container.opening {
+  animation: none;
+  transform: scale(1.2);
+}
+
+.container-body {
+  width: 56px; height: 56px;
+  border: 3px solid #222;
+  box-shadow: 3px 3px 0 #111, inset 0 0 10px rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  position: relative;
+  transition: background 0.3s;
+}
+.container-body.glow {
+  animation: glow-pulse 1s ease-in-out infinite;
+}
+
+.container-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+}
+
+/* 水下 UI 提示 */
+.underwater-hint {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: rgba(160,220,255,0.8);
+  text-align: center;
+  line-height: 2;
+  white-space: nowrap;
+}
+
+/* 水下小人 */
+.underwater-diver {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: bob 3s ease-in-out infinite;
+}
+
+/* ===== 写作场景 ===== */
+#scene-writing {
+  background: var(--deep);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px;
+  gap: 16px;
+}
+
+.writing-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.writing-container-icon {
+  font-size: 28px;
+  border: 3px solid #444;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: #111;
+  flex-shrink: 0;
+}
+
+.writing-prompt-box {
+  width: 100%;
+  background: #111;
+  border: 3px solid var(--gold);
+  padding: 16px;
+  animation: slide-up 0.4s ease both;
+}
+.writing-prompt-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: var(--gold);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.writing-prompt-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.writing-area-wrap {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: slide-up 0.5s 0.1s ease both;
+}
+.writing-textarea {
+  width: 100%;
+  flex: 1;
+  min-height: 200px;
+  background: #0d1a2a;
+  border: 3px solid #444;
+  color: #e8e8e8;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  padding: 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.writing-textarea:focus {
+  border-color: var(--water-lt);
+}
+.writing-textarea::placeholder {
+  color: #444;
+}
+
+.writing-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slide-up 0.5s 0.2s ease both;
+}
+.word-count {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #666;
+}
+.word-count.ok {
+  color: #5dd45d;
+}
+.word-count-hint {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  color: #555;
+  margin-top: 2px;
+}
+
+/* ===== 分类场景 ===== */
+#scene-classify {
+  background: linear-gradient(to bottom, #1a2a3a, #0a1a2a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px;
+  gap: 20px;
+}
+
+.classify-header {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  line-height: 2;
+  animation: fade-in 0.5s ease both;
+}
+
+.classify-card {
+  width: 100%;
+  background: #111;
+  border: 3px solid #444;
+  padding: 20px;
+  animation: slide-up 0.4s ease both;
+}
+.classify-card-prompt {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.classify-card-content {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  color: #ddd;
+  line-height: 1.9;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.classify-card-content::-webkit-scrollbar {
+  width: 4px;
+}
+.classify-card-content::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+.classify-actions {
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  animation: slide-up 0.4s 0.15s ease both;
+}
+.classify-actions .px-btn {
+  flex: 1;
+  padding: 14px 8px;
+  font-size: 8px;
+}
+
+.classify-btn-icon {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+/* ===== 珍宝库场景 ===== */
+#scene-vault {
+  background: linear-gradient(to bottom, #1a1a0a, #2a1a00);
+  display: flex;
+  flex-direction: column;
+}
+
+.vault-header {
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.5);
+  border-bottom: 3px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.vault-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--gold);
+}
+.vault-count {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #888;
+}
+
+.vault-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.vault-list::-webkit-scrollbar { width: 4px; }
+.vault-list::-webkit-scrollbar-thumb { background: #444; }
+
+.vault-date-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vault-date-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #666;
+  padding: 4px 0;
+  border-bottom: 1px solid #333;
+  margin-bottom: 4px;
+}
+
+.vault-entry {
+  background: #1a1400;
+  border: 2px solid #4a3a00;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.vault-entry:hover {
+  border-color: var(--gold);
+}
+.vault-entry-prompt {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 11px;
+  color: var(--gold);
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+.vault-entry-preview {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.vault-entry-icon {
+  float: left;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.vault-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #444;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  text-align: center;
+  line-height: 2;
+}
+.vault-empty-icon { font-size: 48px; }
+
+.vault-footer {
+  padding: 14px 20px;
+  border-top: 3px solid #333;
+  flex-shrink: 0;
+}
+
+/* ===== 展开的条目详情 ===== */
+.entry-detail-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+  animation: fade-in 0.2s ease both;
+  overflow-y: auto;
+}
+.entry-detail-prompt {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  color: var(--gold);
+  line-height: 1.7;
+  border-bottom: 2px solid #333;
+  padding-bottom: 12px;
+}
+.entry-detail-content {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 15px;
+  color: #ddd;
+  line-height: 1.9;
+  flex: 1;
+}
+.entry-detail-meta {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #555;
+  line-height: 2;
+}
