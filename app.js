@@ -4,7 +4,7 @@ import {
   saveEntry,
   pickRandomPrompt,
   pickRandomContainers,
-} from './data.js';
+} from './data.js'; // 删掉了这里的 src/
 
 // ===== 状态 =====
 let state = {
